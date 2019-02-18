@@ -11,8 +11,8 @@
         "ss twitter feed"
     ],
     "support": {
-        "docs": "???",
-        "issues": "???"
+        "docs": "https://github.com/ssplugin/ss-twitter-feed/blob/master/README.md",
+        "issues": "https://github.com/ssplugin/ss-twitter-feed/blob/master/README.md"
     },
     "license": "MIT",
     "authors": [
@@ -35,7 +35,7 @@
         "handle": "ss-twitter-feed",
         "hasCpSettings": true,
         "hasCpSection": false,
-        "changelogUrl": "???",
+        "changelogUrl": "https://github.com/ssplugin/ss-twitter-feed/blob/master/CHANGELOG.md",
         "components": {
             "ssTwitterFeedService": "ssplugin\\sstwitterfeed\\services\\SsTwitterFeedService"
         },
