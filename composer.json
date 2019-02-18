@@ -1,0 +1,44 @@
+{
+    "name": "ssplugin/ss-twitter-feed",
+    "description": "Show Recent Tweets.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "ss twitter feed"
+    ],
+    "support": {
+        "docs": "???",
+        "issues": "???"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SystemSeeders",
+            "homepage": "http://www.systemseeders.com/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1",
+        "abraham/twitteroauth": "1.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+          "ssplugin\\sstwitterfeed\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "SS Twitter Feed",
+        "handle": "ss-twitter-feed",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "???",
+        "components": {
+            "ssTwitterFeedService": "ssplugin\\sstwitterfeed\\services\\SsTwitterFeedService"
+        },
+        "class": "ssplugin\\sstwitterfeed\\SsTwitterFeed"
+    }
+}

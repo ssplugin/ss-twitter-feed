@@ -1,0 +1,38 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * SS Twitter Feed plugin for Craft CMS 3.x
+ *
+ * SS Twitter Feed Settings.twig
+ *
+ * @author    SystemSeeders
+ * @copyright Copyright (c) 2019 SystemSeeders
+ * @link      http://www.systemseeders.com/
+ * @package   SsTwitterFeed
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{% do view.registerAssetBundle( "ssplugin\\sstwitterfeed\\assetbundles\\sstwitterfeed\\SsTwitterFeedAsset" ) %}
+
+<p> Connect to a Twitter account click on button </p>
+<div class="sstweet_config">
+    <a href="{{ craft.ssTwitterFeed.getUrl() }}" class="sstweet-get-token"> <i class="fa fa-twitter"></i> Connect to twitter and get access token </a>
+</div>
+
+{{ forms.textField({
+    label: 'Access token',        
+    id: 'access_token',
+    name: 'access_token',
+    value: settings['access_token']})
+}}
+
+{{ forms.textField({
+    label: 'Access token secret',    
+    id: 'access_token_secret',
+    name: 'access_token_secret',
+    value: settings['access_token_secret']})
+}}
+

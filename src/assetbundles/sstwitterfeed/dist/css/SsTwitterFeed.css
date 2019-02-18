@@ -1,0 +1,62 @@
+/**
+ * SS Twitter Feed plugin for Craft CMS
+ *
+ * SS Twitter Feed CSS
+ *
+ * @author    SystemSeeders
+ * @copyright Copyright (c) 2019 SystemSeeders
+ * @link      http://www.systemseeders.com/
+ * @package   SsTwitterFeed
+ * @since     1.0.0
+ */
+.sstweet-get-token {
+    display: block;
+    float: left;
+    clear: both;
+    padding: 0 21px 0 21px;
+    height: 47px;
+    line-height: 47px;
+    background: #1da1f2;
+    color: #e9eef3;
+    text-decoration: none;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.sstweet-get-token .fa {
+    margin-right: 10px;
+    font-size: 22px;
+    position: relative;
+    top: 3px;
+}
+.sstweet-get-token:hover {
+    text-decoration: none !important;
+    background-color: #0c7abf;
+    color: #fff;
+    -moz-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+.sstweet_config{
+   float: left;
+    width: 100%;
+    clear: both;
+    margin: 10px 0 10px 0;
+}
+#settings-access_token-field{
+  clear: both;
+  padding-top: 20px;
+}
+
+#settings-access_token-field, #settings-access_token_secret-field {
+  max-width: 450px;
+}
+.btn small{
+  color: red !important;
+}
