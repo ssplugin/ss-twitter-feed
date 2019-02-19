@@ -11,8 +11,8 @@
         "ss twitter feed"
     ],
     "support": {
-        "docs": "https://github.com/ssplugin/ss-twitter-feed/blob/master/README.md",
-        "issues": "https://github.com/ssplugin/ss-twitter-feed/blob/master/README.md"
+        "docs": "https://github.com/ssplugin/ss-twitter-feed",
+        "issues": "https://github.com/ssplugin/ss-twitter-feed"
     },
     "license": "MIT",
     "authors": [
