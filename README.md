@@ -68,7 +68,7 @@ Example:
     <li> Limit number of tweets to show.</li>
     <li> Increment social commitment among you and your clients.</li>
     <li> Show your Twitter content your way to perfectly match your website style.</li>
-    <li> The Plugib is updated consistently with new features, bug-fixes and Twitter API changes.</li>
+    <li> The Plugin is updated consistently with new features, bug-fixes and Twitter API changes.</li>
     <li> Support is speedy, effective and powerful.</li>
 </ul>
 
