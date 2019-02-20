@@ -2,7 +2,7 @@
     "name": "ssplugin/ss-twitter-feed",
     "description": "Show Recent Tweets.",
     "type": "craft-plugin",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "keywords": [
         "craft",
         "cms",
