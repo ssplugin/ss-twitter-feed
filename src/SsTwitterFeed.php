@@ -63,7 +63,7 @@ class SsTwitterFeed extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.0';
+    public $schemaVersion = '1.0.1';
     public const CONSUMER_KEY = 'qhNHMB4B4dl4udJ0aGclECEK7';
     public const CONSUMER_SECRET = 'kgSKNDd7EJm5rgbMRdAVwL68piJLphea1XKT84pOkJn3PuKLZt';
     public const OAUTH_PROCESSOR_URL = 'http://systemseeders.com/twitterapp/ss-twitter-feed.php?return_uri=';
