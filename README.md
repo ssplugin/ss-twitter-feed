@@ -74,7 +74,7 @@ Example:
 
 ### License
 
-This SS Twitter Feed plugin for crfat is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+This SS Twitter Feed plugin for craft is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
 ### Release it
 
