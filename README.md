@@ -74,7 +74,7 @@ Example:
 
 ### License
 
-This DOMPDF Wrapper for Laravel is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+This is a [MIT license](http://opensource.org/licenses/MIT)
 
 ### Release it
 
