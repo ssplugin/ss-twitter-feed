@@ -60,7 +60,7 @@ class SsTwitterFeedVariable
 
               if( empty( $row->entities->urls )  &&  empty( $row->entities->media[0]->url ) ) {
                 
-                $url = $row->retweeted_status->entities->urls[0]->url;
+                $url = isset( $row->retweeted_status->entities->urls[0]->url )? $row->retweeted_status->entities->urls[0]->url:null;
               } else {
                
                 $url = isset( $row->entities->urls[0]->url ) ? $row->entities->urls[0]->url : $row->entities->media[0]->url;
