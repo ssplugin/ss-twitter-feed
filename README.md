@@ -35,6 +35,10 @@ Just click on button get your Twitter Access Token and Twitter Secret.
 
 -You can directly access multidimensional array of your Twitter posts using following method.
 Each post has Following components you can get to:
+
+- If you wish exclude retweet, Just pass parameter like craft.ssTwitterFeed.displayPost( '5', 'exclude_retweets' ).
+- Multiple images array of your twitter.
+
 <ul>
    <li> <strong>name</strong> ( the name of the Twitter account )</li>
    <li> <strong>screen_name</strong> ( the screen name of the Twitter account )</li>
@@ -42,6 +46,7 @@ Each post has Following components you can get to:
    <li> <strong>profile_image_url</strong>( Profile picture of your Twitter )</li>
    <li> <strong>url</strong> ( the Twitter url )</li>
    <li> <strong>image_url</strong> ( Twitter media image url )</li>
+   <li> <strong>images</strong> ( Multiple images array of your Twitter )</li>
    <li> <strong>retweet_count</strong>  (Total number of retweet count  )</li>
    <li> <strong>favorite_count</strong> (Total number of likes the post recieved )</li>
    <li> <strong>created_at</strong>     ( The tweet post time )</li>
@@ -55,6 +60,9 @@ Example:
 	{{ tweet.url }}
 	{{ tweet.screen_name }}
 	{{ tweet.text }}
+  {% for images in tweet.images %}
+      {{ images.url }}
+  {% endfor %}
 	{{ tweet.created_at }}
 	{{ tweet.retweet_count }}
 	{{ tweet.favorite_count }}

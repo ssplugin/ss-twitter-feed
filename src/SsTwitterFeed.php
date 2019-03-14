@@ -36,7 +36,7 @@ use yii\base\Event;
  *
  * @author    SystemSeeders
  * @package   SsTwitterFeed
- * @since     1.0.0
+ * @since     1.0.1
  *
  * @property  SsTwitterFeedServiceService $ssTwitterFeedService
  * @property  Settings $settings

@@ -24,7 +24,7 @@ use Craft;
  *
  * @author    SystemSeeders
  * @package   SsTwitterFeed
- * @since     1.0.0
+ * @since     1.0.1
  */
 class SsTwitterFeedVariable
 {
@@ -45,33 +45,40 @@ class SsTwitterFeedVariable
      * @param null $optional
      * @return string
      */
-    public function displayPost( $limit = '10' )
+    public function displayPost( $limit = '10', $exclude_retweets  = 'false' )
     {
+        $include_rts = 'true';
+        if( $exclude_retweets == 'true' ) {
+            $include_rts = 'false';
+        }
         $settings = craft::$app->plugins->getPlugin('ss-twitter-feed')->getSettings();
         if( empty($settings->access_token) || empty( $settings->access_token_secret )) {
             echo 'Please connect to Twitter via SS Twitter Feed Plugin for get Access token and Secret.';
         } else { 
           
           $conn = new TwitterOAuth( SsTwitterFeed::CONSUMER_KEY, SsTwitterFeed::CONSUMER_SECRET, $settings->access_token, $settings->access_token_secret );
-          $tweets_info = $conn->get( "statuses/user_timeline", array('count' => $limit, 'exclude_replies' => true));
-          
+          $tweets_info = $conn->get( "statuses/user_timeline", array( 'count' => $limit, 'exclude_replies' => true, 'tweet_mode' => 'extended', 'include_rts'=> $include_rts ));
+         
           $tweets = array();
-          foreach ($tweets_info as $row) {
-
+          foreach ($tweets_info as $row) {              
               if( empty( $row->entities->urls )  &&  empty( $row->entities->media[0]->url ) ) {
-                
-                $url = isset( $row->retweeted_status->entities->urls[0]->url )? $row->retweeted_status->entities->urls[0]->url:null;
-              } else {
-               
-                $url = isset( $row->entities->urls[0]->url ) ? $row->entities->urls[0]->url : $row->entities->media[0]->url;
+                  $url = isset( $row->retweeted_status->entities->urls[0]->url ) ? $row->retweeted_status->entities->urls[0]->url : null;
+              } else {                   
+                  $url = isset( $row->entities->urls[0]->url ) ? $row->entities->urls[0]->url : $row->entities->media[0]->url;
               }
+              if( empty( $row->extended_entities ) && empty( $row->retweeted_status->extended_entities ) ) {
+                  $images = isset( $row->quoted_status->extended_entities->media )?$row->quoted_status->extended_entities->media:null;                        
+              } else {
+                  $images = isset($row->extended_entities->media)?$row->extended_entities->media:$row->retweeted_status->extended_entities->media;
+              } 
               $tweets[] = array(
                   'name' => isset( $row->user->name ) ? $row->user->name:null,
                   'screen_name' => isset( $row->user->screen_name ) ? $row->user->screen_name:null,
-                  'text' => isset( $row->text )?$row->text:null,
+                  'text' => isset( $row->full_text )?$row->full_text:null,
                   'profile_image_url' => isset( $row->user->profile_image_url )?$row->user->profile_image_url:null,
-                  'url' => $url,
+                  'url' => isset( $url )? $url: null,
                   'image_url' => isset( $row->entities->media[0]->media_url ) ? $row->entities->media[0]->media_url:null,
+                  'images'   => isset( $images )?$images:null,
                   'retweet_count'  => isset( $row->retweet_count ) ? $row->retweet_count:null,
                   'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,                     
                   'created_at'     => $this->time_ago( $row->created_at ),
@@ -79,9 +86,12 @@ class SsTwitterFeedVariable
                   'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
               );
           }
-          
+          // echo '<pre>';
+          // print_r($tweets);
+          // exit();
           return $tweets;
-        }      
+        }
+
     }
 
     public function getUrl()
