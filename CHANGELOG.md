@@ -3,8 +3,8 @@
 
 ### Added
 
-- Multiple twitter images array added.
-- Exclude retweet
+- Multiple tweet images array variable.
+- Exclude retweet.
 
 ### Fixed
 
