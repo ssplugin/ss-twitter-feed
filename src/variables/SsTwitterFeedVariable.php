@@ -24,7 +24,7 @@ use Craft;
  *
  * @author    SystemSeeders
  * @package   SsTwitterFeed
- * @since     1.0.1
+ * @since     1.0.0
  */
 class SsTwitterFeedVariable
 {
@@ -70,11 +70,14 @@ class SsTwitterFeedVariable
                   $images = isset( $row->quoted_status->extended_entities->media )?$row->quoted_status->extended_entities->media:null;                        
               } else {
                   $images = isset($row->extended_entities->media)?$row->extended_entities->media:$row->retweeted_status->extended_entities->media;
-              } 
+              }
+              $ss_tweet = $this->parseTweet( $row->full_text );
+
               $tweets[] = array(
                   'name' => isset( $row->user->name ) ? $row->user->name:null,
                   'screen_name' => isset( $row->user->screen_name ) ? $row->user->screen_name:null,
-                  'text' => isset( $row->full_text )?$row->full_text:null,
+                  'text' => isset(  $row->full_text ) ? $row->full_text:null,
+                  'text_html' => isset(  $ss_tweet ) ? $ss_tweet:null,
                   'profile_image_url' => isset( $row->user->profile_image_url )?$row->user->profile_image_url:null,
                   'url' => isset( $url )? $url: null,
                   'image_url' => isset( $row->entities->media[0]->media_url ) ? $row->entities->media[0]->media_url:null,
@@ -86,12 +89,29 @@ class SsTwitterFeedVariable
                   'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
               );
           }
-          // echo '<pre>';
-          // print_r($tweets);
-          // exit();
+          
           return $tweets;
         }
 
+    }
+
+    public function makeClickableLinks( $text ) {
+        $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";     
+        if(preg_match($reg_exUrl, $text, $url)) {            
+            return preg_replace($reg_exUrl, "<a href='{$url[0]}' target='_blank'>{$url[0]}</a>", $text);
+        } else {        
+            return $text;        
+        }
+    }
+
+    public function parseTweet( $text ) {
+
+      $text = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t< ]*)#", "\\1<a href=\"\\2\" target=\"_blank\">\\2</a>", $text);
+      $text = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r< ]*)#", "\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>", $text);
+      $text = preg_replace("/@(\w+)/", "<a href=\"http://www.twitter.com/\\1\" target=\"_blank\">@\\1</a>", $text);
+      $text = preg_replace("/#(\w+)/", "<a href=\"http://twitter.com/search?q=\\1\" target=\"_blank\">#\\1</a>", $text);
+
+      return $text;
     }
 
     public function getUrl()

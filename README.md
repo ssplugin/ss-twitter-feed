@@ -43,6 +43,7 @@ Each post has Following components you can get to:
    <li> <strong>name</strong> ( the name of the Twitter account )</li>
    <li> <strong>screen_name</strong> ( the screen name of the Twitter account )</li>
    <li> <strong>text</strong> ( Twitter text )</li>
+   <li> <strong>text_html</strong> ( Twitter text with links )</li>
    <li> <strong>profile_image_url</strong>( Profile picture of your Twitter )</li>
    <li> <strong>url</strong> ( the Twitter url )</li>
    <li> <strong>image_url</strong> ( Twitter media image url )</li>
@@ -59,7 +60,7 @@ Example:
 {% for tweet in craft.ssTwitterFeed.displayPost( '5' ) %}
 	{{ tweet.url }}
 	{{ tweet.screen_name }}
-	{{ tweet.text }}
+	{{ tweet.text }} {# OR  {{ tweet.text_html | raw }} #} 
   {% for images in tweet.images %}
       {{ images.url }}
   {% endfor %}
