@@ -1,4 +1,9 @@
 # SS Twitter Feed Changelog
+## 1.0.3 - 2019-05-20
+
+### Fixed
+
+- fixed issue and solved errors.
 ## 1.0.2 - 2019-03-26
 
 ### Added

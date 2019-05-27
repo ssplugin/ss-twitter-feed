@@ -21,7 +21,7 @@ class OauthController extends Controller
 		$oauthToken = Craft::$app->getRequest()->getParam('oauth_token');
         $oauthVerifier = Craft::$app->getRequest()->getParam('oauth_verifier');
 
-        $connection = new TwitterOAuth( SsTwitterFeed::CONSUMER_KEY, SsTwitterFeed::CONSUMER_SECRET, $request_token['oauth_token'], $request_token['oauth_token_secret']);
+        $connection = new TwitterOAuth( SsTwitterFeed::$CONSUMER_KEY, SsTwitterFeed::$CONSUMER_SECRET, $request_token['oauth_token'], $request_token['oauth_token_secret']);
 
         $access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $oauthVerifier]);
 

@@ -56,7 +56,7 @@ class SsTwitterFeedVariable
             echo 'Please connect to Twitter via SS Twitter Feed Plugin for get Access token and Secret.';
         } else { 
           
-          $conn = new TwitterOAuth( SsTwitterFeed::CONSUMER_KEY, SsTwitterFeed::CONSUMER_SECRET, $settings->access_token, $settings->access_token_secret );
+          $conn = new TwitterOAuth( SsTwitterFeed::$CONSUMER_KEY, SsTwitterFeed::$CONSUMER_SECRET, $settings->access_token, $settings->access_token_secret );
           $tweets_info = $conn->get( "statuses/user_timeline", array( 'count' => $limit, 'exclude_replies' => true, 'tweet_mode' => 'extended', 'include_rts'=> $include_rts ));
          
           $tweets = array();

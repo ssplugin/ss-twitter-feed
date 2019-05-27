@@ -47,13 +47,14 @@ class SsTwitterFeedService extends Component
      */
     public function getUrl()
     {
-        $connection     = new TwitterOAuth( SsTwitterFeed::CONSUMER_KEY, SsTwitterFeed::CONSUMER_SECRET);
-        $site_url       = Craft::getAlias('@web');
-        $request_token  = $connection->oauth('oauth/request_token', array('oauth_callback' => SsTwitterFeed::OAUTH_PROCESSOR_URL.$site_url.SsTwitterFeed::OAUTH_RET_URL ));
+        $connection     = new TwitterOAuth( SsTwitterFeed::$CONSUMER_KEY, SsTwitterFeed::$CONSUMER_SECRET);
+        $site_url       = trim( Craft::getAlias('@web') );
+        
+        $request_token  = $connection->oauth('oauth/request_token', array('oauth_callback' => SsTwitterFeed::$OAUTH_PROCESSOR_URL.$site_url.SsTwitterFeed::$OAUTH_RET_URL ));
     
         $_SESSION['oauth_token']        = $request_token['oauth_token'];
         $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
-        $url = SsTwitterFeed::OAUTH_PROCESSOR_URL.$site_url.SsTwitterFeed::OAUTH_RET_URL.'&toauth_token='.$request_token['oauth_token'];
+        $url = SsTwitterFeed::$OAUTH_PROCESSOR_URL.$site_url.SsTwitterFeed::$OAUTH_RET_URL.'&toauth_token='.$request_token['oauth_token'];
 
         return $url;
     }
