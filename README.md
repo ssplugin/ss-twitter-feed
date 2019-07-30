@@ -51,6 +51,7 @@ Each post has Following components you can get to:
    <li> <strong>retweet_count</strong>  (Total number of retweet count  )</li>
    <li> <strong>favorite_count</strong> (Total number of likes the post recieved )</li>
    <li> <strong>created_at</strong>     ( The tweet post time )</li>
+   <li> <strong>tweet_date</strong>     ( To display original date format which is given by twitter, Also you can be able to filter/formats date as you wish using twig date filter )</li>
    <li> <strong>retweet_link</strong> (The retweet link on site )</li>
    <li> <strong>favorite_link</strong> (  favorite link )</li>
 </ul>

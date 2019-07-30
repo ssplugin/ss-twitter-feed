@@ -71,7 +71,8 @@ class SsTwitterFeedVariable
               } else {
                   $images = isset($row->extended_entities->media)?$row->extended_entities->media:$row->retweeted_status->extended_entities->media;
               }
-              $ss_tweet = $this->parseTweet( $row->full_text );
+              $full_text = isset( $row->full_text ) ? $row->full_text:null;
+              $ss_tweet = $this->parseTweet( $full_text );
 
               $tweets[] = array(
                   'name' => isset( $row->user->name ) ? $row->user->name:null,
@@ -85,6 +86,7 @@ class SsTwitterFeedVariable
                   'retweet_count'  => isset( $row->retweet_count ) ? $row->retweet_count:null,
                   'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,                     
                   'created_at'     => $this->time_ago( $row->created_at ),
+                  'tweet_date'     => isset( $row->created_at ) ? $row->created_at:null,
                   'retweet_link'  => 'https://twitter.com/intent/retweet?tweet_id='.$row->id_str,
                   'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
               );

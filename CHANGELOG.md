@@ -1,4 +1,12 @@
 # SS Twitter Feed Changelog
+## 1.0.4 - 2019-07-29
+
+- fixed issue and solved errors.
+
+### Added
+
+- Added new variable {{ tweet_date }} to display original date format which is given by twitter, Also you can be able to filter/formats date as you wish using twig date filter.
+
 ## 1.0.3 - 2019-05-20
 
 ### Fixed
