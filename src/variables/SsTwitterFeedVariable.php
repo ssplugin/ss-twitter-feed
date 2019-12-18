@@ -54,20 +54,15 @@ class SsTwitterFeedVariable
         $settings = craft::$app->plugins->getPlugin('ss-twitter-feed')->getSettings();
         if( empty($settings->access_token) || empty( $settings->access_token_secret )) {
             echo 'Please connect to Twitter via SS Twitter Feed Plugin for get Access token and Secret.';
-        } else { 
-          
+        } else {
+
           $conn = new TwitterOAuth( SsTwitterFeed::$CONSUMER_KEY, SsTwitterFeed::$CONSUMER_SECRET, $settings->access_token, $settings->access_token_secret );
           $tweets_info = $conn->get( "statuses/user_timeline", array( 'count' => $limit, 'exclude_replies' => true, 'tweet_mode' => 'extended', 'include_rts'=> $include_rts ));
-         
+
           $tweets = array();
-          foreach ($tweets_info as $row) {              
-              if( empty( $row->entities->urls )  &&  empty( $row->entities->media[0]->url ) ) {
-                  $url = isset( $row->retweeted_status->entities->urls[0]->url ) ? $row->retweeted_status->entities->urls[0]->url : null;
-              } else {                   
-                  $url = isset( $row->entities->urls[0]->url ) ? $row->entities->urls[0]->url : $row->entities->media[0]->url;
-              }
+          foreach ($tweets_info as $row) {
               if( empty( $row->extended_entities ) && empty( $row->retweeted_status->extended_entities ) ) {
-                  $images = isset( $row->quoted_status->extended_entities->media )?$row->quoted_status->extended_entities->media:null;                        
+                  $images = isset( $row->quoted_status->extended_entities->media )?$row->quoted_status->extended_entities->media:null;
               } else {
                   $images = isset($row->extended_entities->media)?$row->extended_entities->media:$row->retweeted_status->extended_entities->media;
               }
@@ -80,29 +75,29 @@ class SsTwitterFeedVariable
                   'text' => isset(  $row->full_text ) ? $row->full_text:null,
                   'text_html' => isset(  $ss_tweet ) ? $ss_tweet:null,
                   'profile_image_url' => isset( $row->user->profile_image_url )?$row->user->profile_image_url:null,
-                  'url' => isset( $url )? $url: null,
+                  'url' => 'https://twitter.com/' . $row->user->screen_name . '/status/' . $row->id,
                   'image_url' => isset( $row->entities->media[0]->media_url ) ? $row->entities->media[0]->media_url:null,
                   'images'   => isset( $images )?$images:null,
                   'retweet_count'  => isset( $row->retweet_count ) ? $row->retweet_count:null,
-                  'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,                     
+                  'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,
                   'created_at'     => $this->time_ago( $row->created_at ),
                   'tweet_date'     => isset( $row->created_at ) ? $row->created_at:null,
                   'retweet_link'  => 'https://twitter.com/intent/retweet?tweet_id='.$row->id_str,
                   'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
               );
           }
-          
+
           return $tweets;
         }
 
     }
 
     public function makeClickableLinks( $text ) {
-        $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";     
-        if(preg_match($reg_exUrl, $text, $url)) {            
+        $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+        if(preg_match($reg_exUrl, $text, $url)) {
             return preg_replace($reg_exUrl, "<a href='{$url[0]}' target='_blank'>{$url[0]}</a>", $text);
-        } else {        
-            return $text;        
+        } else {
+            return $text;
         }
     }
 
@@ -117,33 +112,33 @@ class SsTwitterFeedVariable
     }
 
     public function getUrl()
-    {        
+    {
        return SsTwitterFeed::$plugin->ssTwitterFeedService->getUrl( );
     }
-    
+
     public function time_ago($timestamp){
-  
+
         $time_ago        = strtotime($timestamp);
         $current_time    = time();
         $time_difference = $current_time - $time_ago;
         $seconds         = $time_difference;
-      
-        $minutes = round($seconds / 60); // value 60 is seconds  
-        $hours   = round($seconds / 3600); //value 3600 is 60 minutes * 60 sec  
-        $days    = round($seconds / 86400); //86400 = 24 * 60 * 60;  
-        $weeks   = round($seconds / 604800); // 7*24*60*60;  
-        $months  = round($seconds / 2629440); //((365+365+365+365+366)/5/12)*24*60*60  
+
+        $minutes = round($seconds / 60); // value 60 is seconds
+        $hours   = round($seconds / 3600); //value 3600 is 60 minutes * 60 sec
+        $days    = round($seconds / 86400); //86400 = 24 * 60 * 60;
+        $weeks   = round($seconds / 604800); // 7*24*60*60;
+        $months  = round($seconds / 2629440); //((365+365+365+365+366)/5/12)*24*60*60
         $years   = round($seconds / 31553280); //(365+365+365+365+366)/5 * 24 * 60 * 60
-                    
+
         if ($seconds <= 60){
             return "Just Now";
-        } else if ($minutes <= 60){      
-            return "$minutes minutes ago";      
-        } else if ($hours <= 24){      
-            return "$hours hrs ago";    
-        } else if ($days <= 7){       
-            return "$days days ago";   
-        } else {        
+        } else if ($minutes <= 60){
+            return "$minutes minutes ago";
+        } else if ($hours <= 24){
+            return "$hours hrs ago";
+        } else if ($days <= 7){
+            return "$days days ago";
+        } else {
             return date('d M', $time_ago);
         }
     }
