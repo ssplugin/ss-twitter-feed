@@ -2,7 +2,7 @@
     "name": "ssplugin/ss-twitter-feed",
     "description": "Show Recent Tweets.",
     "type": "craft-plugin",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "keywords": [
         "craft",
         "cms",
@@ -11,7 +11,7 @@
         "ss twitter feed"
     ],
     "support": {
-        "docs": "https://github.com/ssplugin/ss-twitter-feed",
+        "docs": "https://github.com/ssplugin/ss-twitter-feed/blob/master/README.md",
         "issues": "https://github.com/ssplugin/ss-twitter-feed"
     },
     "license": "MIT",
@@ -35,6 +35,7 @@
         "handle": "ss-twitter-feed",
         "hasCpSettings": true,
         "hasCpSection": false,
+        "documentationUrl": "https://github.com/ssplugin/ss-twitter-feed/blob/master/README.md",
         "changelogUrl": "https://github.com/ssplugin/ss-twitter-feed/blob/master/CHANGELOG.md",
         "components": {
             "ssTwitterFeedService": "ssplugin\\sstwitterfeed\\services\\SsTwitterFeedService"

@@ -8,6 +8,7 @@ use Craft;
 use craft\web\Controller;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use yii\web\Response;
+use craft\helpers\UrlHelper;
 
 class OauthController extends Controller
 {
@@ -35,7 +36,7 @@ class OauthController extends Controller
                     );
 
         Craft::$app->getPlugins()->savePluginSettings($plugin, $nsettings);
-    	return $this->redirect('admin/settings/plugins/ss-twitter-feed');
+    	return $this->redirect(UrlHelper::cpUrl('settings/plugins/ss-twitter-feed'));
 	}
 
 }
