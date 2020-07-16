@@ -18,9 +18,13 @@
 {% do view.registerAssetBundle( "ssplugin\\sstwitterfeed\\assetbundles\\sstwitterfeed\\SsTwitterFeedAsset" ) %}
 
 <p> Connect to a Twitter account click on button </p>
-<div class="sstweet_config">
-    <a href="{{ craft.ssTwitterFeed.getUrl() }}" class="sstweet-get-token"> <i class="fa fa-twitter"></i> Connect to twitter and get access token </a>
-</div>
+{% if craft.ssTwitterFeed.getUrl() != "Could not authenticate." %}
+    <div class="sstweet_config">
+        <a href="{{craft.ssTwitterFeed.getUrl()}}" target="" class="sstweet-get-token"> <i class="fa fa-twitter"></i> Connect to twitter and get access token </a>
+    </div>
+{% else %}
+	<h4>Something Wrong.</h4>
+{% endif %}
 
 {{ forms.textField({
     label: 'Access token',        

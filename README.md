@@ -63,7 +63,7 @@ Example:
 	{{ tweet.screen_name }}
 	{{ tweet.text }} {# OR  {{ tweet.text_html | raw }} #} 
   {% for images in tweet.images %}
-      {{ images.url }}
+      {{ images.media_url }}
   {% endfor %}
 	{{ tweet.created_at }}
 	{{ tweet.retweet_count }}

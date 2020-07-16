@@ -11,7 +11,6 @@
 namespace ssplugin\sstwitterfeed\variables;
 
 use ssplugin\sstwitterfeed\SsTwitterFeed;
-use Abraham\TwitterOAuth\TwitterOAuth;
 use Craft;
 
 /**
@@ -52,44 +51,122 @@ class SsTwitterFeedVariable
             $include_rts = 'false';
         }
         $settings = craft::$app->plugins->getPlugin('ss-twitter-feed')->getSettings();
+
         if( empty($settings->access_token) || empty( $settings->access_token_secret )) {
             echo 'Please connect to Twitter via SS Twitter Feed Plugin for get Access token and Secret.';
         } else {
+            //Retrive tweet data
+            $param =  array( 'count' => $limit, 'exclude_replies' => 'true', 'tweet_mode' => 'extended', 'include_rts'=> $include_rts );
+            $tweets_info = $this->buidTweetJson($settings, $param);
+            
+            if( !empty($tweets_info)){
+                $tweets_data = (array) $tweets_info;
+                if( isset($tweets_data['errors'][0]) ){
+                    $errmsg = '';
+                    foreach ((array) $tweets_data['errors'][0] as $k => $value) {
+                        $errmsg .= $value;
+                    }
+                    echo $errmsg;
+                    return true;
+                } else {
+                    if(!empty($tweets_data)){
+                        $tweets = array();
+                        foreach ($tweets_data as $row) {
+                            if( empty( $row->entities->urls )  &&  empty( $row->entities->media[0]->url ) ) {
+                                $url = isset( $row->retweeted_status->entities->urls[0]->url ) ? $row->retweeted_status->entities->urls[0]->url : null;
+                            } else {                   
+                                $url = isset( $row->entities->urls[0]->url ) ? $row->entities->urls[0]->url : $row->entities->media[0]->url;
+                            }
+                            if( empty( $row->extended_entities ) && empty( $row->retweeted_status->extended_entities ) ) {
+                                $images = isset( $row->quoted_status->extended_entities->media )?$row->quoted_status->extended_entities->media:null;                        
+                            } else {
+                                $images = isset($row->extended_entities->media)?$row->extended_entities->media:$row->retweeted_status->extended_entities->media;
+                            }
+                            $ss_tweet = $this->parseTweet( $row->full_text );
 
-          $conn = new TwitterOAuth( SsTwitterFeed::$CONSUMER_KEY, SsTwitterFeed::$CONSUMER_SECRET, $settings->access_token, $settings->access_token_secret );
-          $tweets_info = $conn->get( "statuses/user_timeline", array( 'count' => $limit, 'exclude_replies' => true, 'tweet_mode' => 'extended', 'include_rts'=> $include_rts ));
-
-          $tweets = array();
-          foreach ($tweets_info as $row) {
-              if( empty( $row->extended_entities ) && empty( $row->retweeted_status->extended_entities ) ) {
-                  $images = isset( $row->quoted_status->extended_entities->media )?$row->quoted_status->extended_entities->media:null;
-              } else {
-                  $images = isset($row->extended_entities->media)?$row->extended_entities->media:$row->retweeted_status->extended_entities->media;
-              }
-              $full_text = isset( $row->full_text ) ? $row->full_text:null;
-              $ss_tweet = $this->parseTweet( $full_text );
-
-              $tweets[] = array(
-                  'name' => isset( $row->user->name ) ? $row->user->name:null,
-                  'screen_name' => isset( $row->user->screen_name ) ? $row->user->screen_name:null,
-                  'text' => isset(  $row->full_text ) ? $row->full_text:null,
-                  'text_html' => isset(  $ss_tweet ) ? $ss_tweet:null,
-                  'profile_image_url' => isset( $row->user->profile_image_url )?$row->user->profile_image_url:null,
-                  'url' => 'https://twitter.com/' . $row->user->screen_name . '/status/' . $row->id,
-                  'image_url' => isset( $row->entities->media[0]->media_url ) ? $row->entities->media[0]->media_url:null,
-                  'images'   => isset( $images )?$images:null,
-                  'retweet_count'  => isset( $row->retweet_count ) ? $row->retweet_count:null,
-                  'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,
-                  'created_at'     => $this->time_ago( $row->created_at ),
-                  'tweet_date'     => isset( $row->created_at ) ? $row->created_at:null,
-                  'retweet_link'  => 'https://twitter.com/intent/retweet?tweet_id='.$row->id_str,
-                  'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
-              );
-          }
-
-          return $tweets;
+                            $tweets[] = array(
+                                'name' => isset( $row->user->name ) ? $row->user->name:null,
+                                'screen_name' => isset( $row->user->screen_name ) ? $row->user->screen_name:null,
+                                'text' => isset(  $row->full_text ) ? $row->full_text:null,
+                                'text_html' => isset(  $ss_tweet ) ? $ss_tweet:null,
+                                'profile_image_url' => isset( $row->user->profile_image_url )?$row->user->profile_image_url:null,
+                                'url' => isset( $url )? $url: null,
+                                'image_url' => isset( $row->entities->media[0]->media_url ) ? $row->entities->media[0]->media_url:null,
+                                'images'   => isset( $images )?$images:null,
+                                'retweet_count'  => isset( $row->retweet_count ) ? $row->retweet_count:null,
+                                'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,                     
+                                'created_at'     => $this->time_ago( $row->created_at ),
+                                'retweet_link'  => 'https://twitter.com/intent/retweet?tweet_id='.$row->id_str,
+                                'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
+                            );
+                        }
+                        return $tweets;
+                    }else{
+                        echo 'There are not found any tweets yet.';
+                        return true;
+                    }
+                }
+            }
+            echo 'There are not found any tweets yet.';
+            return true;
         }
+    }
 
+    public function buidTweetJson($settings, $param) {
+        //Build oauth_hash
+        $oauth_hash = '';
+        $oauth_hash .= 'count='.$param['count'].'&';
+        $oauth_hash .= 'exclude_replies='.$param['exclude_replies'].'&';
+        $oauth_hash .= 'include_rts='.$param['include_rts'].'&';
+        $oauth_hash .= 'oauth_consumer_key='.SsTwitterFeed::$CONSUMER_KEY.'&';
+        $oauth_hash .= 'oauth_nonce=' . time() . '&';
+        $oauth_hash .= 'oauth_signature_method=HMAC-SHA1&';
+        $oauth_hash .= 'oauth_timestamp=' . time() . '&';
+        $oauth_hash .= 'oauth_token='.$settings->access_token.'&';
+        $oauth_hash .= 'oauth_version=1.0&';
+        $oauth_hash .= 'tweet_mode=extended';
+
+        //Build signature
+        $base = '';
+        $base .= 'GET';
+        $base .= '&';
+        $base .= rawurlencode('https://api.twitter.com/1.1/statuses/user_timeline.json');
+        $base .= '&';
+        $base .= rawurlencode($oauth_hash);
+        $key = '';
+        $key .= rawurlencode(SsTwitterFeed::$CONSUMER_SECRET);
+        $key .= '&';
+        $key .= rawurlencode($settings->access_token_secret);
+        $signature = base64_encode(hash_hmac('sha1', $base, $key, true));
+        $signature = rawurlencode($signature);
+
+        //Build oauth_header
+        $oauth_header = '';
+        $oauth_header .= 'count="'.$param['count'].'", ';
+        $oauth_header .= 'exclude_replies="'.$param['exclude_replies'].'", ';
+        $oauth_header .= 'include_rts="'.$param['include_rts'].'", ';
+        $oauth_header .= 'oauth_consumer_key="'.SsTwitterFeed::$CONSUMER_KEY.'", ';
+        $oauth_header .= 'oauth_nonce="' . time() . '", ';
+        $oauth_header .= 'oauth_signature="' . $signature . '", ';
+        $oauth_header .= 'oauth_signature_method="HMAC-SHA1", ';
+        $oauth_header .= 'oauth_timestamp="' . time() . '", ';
+        $oauth_header .= 'oauth_token='.$settings->access_token.', ';
+        $oauth_header .= 'oauth_version="1.0", ';
+        $oauth_header .= 'tweet_mode="extended",' ;
+        $curl_header = array("Authorization: OAuth {$oauth_header}", 'Expect:');
+        
+        //Curl request
+        $curl_request = curl_init();
+        curl_setopt($curl_request, CURLOPT_HTTPHEADER, $curl_header);
+        curl_setopt($curl_request, CURLOPT_HEADER, false);
+        curl_setopt($curl_request, CURLOPT_URL, 'https://api.twitter.com/1.1/statuses/user_timeline.json?count='.$param['count'].'&exclude_replies='.$param['exclude_replies'].'&tweet_mode='.$param['tweet_mode'].'&include_rts='.$param['include_rts']);
+        curl_setopt($curl_request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl_request, CURLOPT_SSL_VERIFYPEER, false);
+        $json = curl_exec($curl_request);
+        curl_close($curl_request);
+
+        $tweets_data = json_decode($json);
+        return $tweets_data;
     }
 
     public function makeClickableLinks( $text ) {

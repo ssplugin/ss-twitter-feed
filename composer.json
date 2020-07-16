@@ -2,7 +2,7 @@
     "name": "ssplugin/ss-twitter-feed",
     "description": "Show Recent Tweets.",
     "type": "craft-plugin",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "keywords": [
         "craft",
         "cms",
@@ -22,8 +22,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.0.0-RC1",
-        "abraham/twitteroauth": "1.0.1"
+        "craftcms/cms": "^3.0.0-RC1"
     },
     "autoload": {
         "psr-4": {

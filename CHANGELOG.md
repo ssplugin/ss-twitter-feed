@@ -1,5 +1,10 @@
 # SS Twitter Feed Changelog
 
+## 1.0.6 - 2020-07-16
+
+- Authorized method updated.
+- Previous issue and error solved.
+
 ## 1.0.5 - 2020-05-25
 
 - Issue and errors solved.

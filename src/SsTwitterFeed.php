@@ -64,7 +64,7 @@ class SsTwitterFeed extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.5';
+    public $schemaVersion = '1.0.6';
    
     public static $plugin;
     public static $CONSUMER_KEY = 'qhNHMB4B4dl4udJ0aGclECEK7';
