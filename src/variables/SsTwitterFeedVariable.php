@@ -96,6 +96,7 @@ class SsTwitterFeedVariable
                                 'retweet_count'  => isset( $row->retweet_count ) ? $row->retweet_count:null,
                                 'favorite_count' => isset( $row->favorite_count ) ? $row->favorite_count:null,                     
                                 'created_at'     => $this->time_ago( $row->created_at ),
+                                'tweet_date'     => isset( $row->created_at ) ? $row->created_at:null,
                                 'retweet_link'  => 'https://twitter.com/intent/retweet?tweet_id='.$row->id_str,
                                 'favorite_link'  => 'https://twitter.com/intent/like?tweet_id='.$row->id_str,
                             );

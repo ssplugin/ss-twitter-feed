@@ -80,7 +80,7 @@ class SsTwitterFeedService extends Component
                 
                 $_SESSION['oauth_token']        = $oauth_token;
                 $_SESSION['oauth_token_secret'] = $oauth_token_secret;
-                $url = 'http://api.twitter.com/oauth/authorize?oauth_token='.$oauth_token;
+                $url = 'https://api.twitter.com/oauth/authorize?oauth_token='.$oauth_token;
                 return $url;
             }else{
                 return 'Could not authenticate.'; 
