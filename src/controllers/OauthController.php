@@ -8,13 +8,19 @@ use Craft;
 use craft\web\Controller;
 use yii\web\Response;
 use craft\helpers\UrlHelper;
+use craft\helpers\App;
 
 class OauthController extends Controller
 {
 
 	public function actionCallback( ):Response
 	{
-	   $request_token = [];
+        if( UrlHelper::cpUrl() != '' ) {
+            $cpUrl = UrlHelper::cpUrl();
+        } else {
+            $cpUrl = trim( Craft::getAlias('@web') );
+        }
+	    $request_token = [];
         $request_token['oauth_token'] = $_SESSION['oauth_token'];
         $request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];
 
@@ -66,19 +72,19 @@ class OauthController extends Controller
                     );
                 Craft::$app->getPlugins()->savePluginSettings($plugin, $nsettings);
                 Craft::$app->session->setNotice('Authorized successfully.');
-                return $this->redirect('admin/settings/plugins/ss-twitter-feed');
+                return $this->redirect($cpUrl.'/settings/plugins/ss-twitter-feed');
             }else{
                 if(!empty($errMsg)){
                     Craft::$app->session->setError($errMsg);
                 }else{
                     Craft::$app->session->setError('Authorized not successfully.');
                 }
-                return $this->redirect('admin/settings/plugins/ss-twitter-feed');
+                return $this->redirect($cpUrl.'/settings/plugins/ss-twitter-feed');
             }
         }else{
             Craft::$app->session->setError('Oauth token and oauthVerifier not found.');
             Craft::warning('Oauth token and oauthVerifier not found.', 'ss-twitter-feed');
-            return $this->redirect('admin/settings/plugins/ss-twitter-feed');
+            return $this->redirect($cpUrl.'/settings/plugins/ss-twitter-feed');
         }
 	}
 

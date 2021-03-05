@@ -1,5 +1,10 @@
 # SS Twitter Feed Changelog
 
+## 1.0.8 - 2021-03-21
+
+- Fix Composer 2 compatibility.
+- Solved issue and bug fixed.
+
 ## 1.0.7 - 2021-02-26
 
 - Added new variable {{ tweet_date }} to display original date format which is given by twitter, Also you can be able to filter/formats date as you wish using twig date filter.

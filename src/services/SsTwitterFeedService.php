@@ -46,10 +46,18 @@ class SsTwitterFeedService extends Component
      */
     public function getUrl()
     {
+        if( UrlHelper::cpUrl() != '' ) {
+            $cpUrl = UrlHelper::cpUrl();
+        } else {
+            $cpUrl = trim( Craft::getAlias('@web') );
+        }
         $baseURI = 'https://api.twitter.com/oauth/request_token';
         $nonce = time();
         $timestamp = time();
         $site_url  = trim( Craft::getAlias('@web') );
+        if($cpUrl){
+            $site_url = $cpUrl;
+        }
         $oauth = array('oauth_callback' => SsTwitterFeed::$OAUTH_PROCESSOR_URL.$site_url.SsTwitterFeed::$OAUTH_RET_URL,
                       'oauth_consumer_key' => SsTwitterFeed::$CONSUMER_KEY,
                       'oauth_nonce' => $nonce,
