@@ -36,7 +36,7 @@ Just click on button get your Twitter Access Token and Twitter Secret.
 -You can directly access multidimensional array of your Twitter posts using following method.
 Each post has Following components you can get to:
 
-- If you wish exclude retweet, Just pass parameter like craft.ssTwitterFeed.displayPost( '5', 'exclude_retweets' ).
+- If you wish exclude retweet, Just pass parameter like `craft.ssTwitterFeed.displayPost( '5', true )`.
 - Multiple images array of your twitter.
 
 <ul>
