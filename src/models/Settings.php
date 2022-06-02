@@ -39,10 +39,10 @@ class Settings extends Model
      *
      * @var string
      */
-    public $api_key = '';
-    public $api_secret_key = '';
-    public $access_token = '';
-    public $access_token_secret = '';
+    public string $api_key = '';
+    public string $api_secret_key = '';
+    public string $access_token = '';
+    public string $access_token_secret = '';
 
     // Public Methods
     // =========================================================================
@@ -57,7 +57,7 @@ class Settings extends Model
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['api_key', 'string'],

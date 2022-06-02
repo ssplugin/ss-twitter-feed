@@ -1,5 +1,9 @@
 # SS Twitter Feed Changelog
 
+## 1.0.9 - 2022-02-06
+### Added
+- Craft cms 4 compatability.
+
 ## 1.0.8 - 2021-03-21
 
 - Fix Composer 2 compatibility.

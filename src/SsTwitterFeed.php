@@ -21,7 +21,7 @@ use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterUrlRulesEvent;
-
+use craft\base\Model;
 use yii\base\Event;
 
 /**
@@ -64,7 +64,7 @@ class SsTwitterFeed extends Plugin
      *
      * @var string
      */
-    public $schemaVersion = '1.0.8';
+    public string $schemaVersion = '1.0.9';
    
     public static $plugin;
     public static $CONSUMER_KEY = 'qhNHMB4B4dl4udJ0aGclECEK7';
@@ -168,7 +168,7 @@ class SsTwitterFeed extends Plugin
      *
      * @return \craft\base\Model|null
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): model
     {
         return new Settings();
     }

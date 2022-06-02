@@ -1,11 +1,11 @@
-# SS Twitter Feed plugin for Craft CMS 3.x
+# SS Twitter Feed plugin for Craft CMS 4.x
 
 Show Recent twitter timeline on your site. 
 
 
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+This plugin requires Craft CMS 4 or later and PHP 8.
 
 ## Installation
 
